@@ -1,0 +1,154 @@
+$ Details can be found in the TMAP7 manual. Dollar signs in front of text indicates comment.
+$ --------------------------
+title input                                       $ Title input can be used to give details about the simulation.
+$ --------------------------
+AS-1: 12 Cr ODS
+[] contain older version info. Simulation of 12 Cr ODS (assume pure Fe)
+[Polycrystalline tungsten] experiment 
+irradiated at RT with [H] at [5 keV],
+1E15 H/cm2/s for [5000]8400 s. 
+TDS at [50 C/min] 2 K/s 
+to [1000 C] 1200 K.
+[See T. Hino et al., Fus. Engr. 
+& Des. 39-40 (1998) pp.227-233.] 
+See V.S.M. PEREIRA, Microstructural Evolution and Behavior of Deuterium in a Ferritic ODS 12 Cr Steel Annealed at Different Temperatures. TDS at 2 K/s to 1200 K. Despite ODS steel, we assume pure alpha-Fe
+[polyX tungsten, no implantation
+no cooldown sample in 2s to 300K
+TDS at 1 K/s to 1300K
+Traps: 1.2eV(1mm)/ 1.4eV(1um)/ 1.85eV(0um)]
+end of title input
+$ --------------------------
+main input
+$ --------------------------
+dspcnme=d,end                                     $ diffusive species
+sspcnme=d2,end                                    $ surface species
+espcnme=d2g,end                                   $ enclosure species
+segnds=90,end
+nbrencl=1,end                                     $ 1 test chamber
+end of main input
+$ --------------------------
+enclosure input
+$ --------------------------
+start bdry,1,end                                  $ boundary condition for enclosure 1
+$ Enclosure 1 is the plasma chamber with pressure assumed negligible
+etemp=300.0,end                                   $ temperature in K
+esppres=d2g,const,1.0e-6,end                      $ pressure in Pa
+end of enclosure input
+$ --------------------------
+thermal input
+$ --------------------------
+start thermseg,end
+delx=0.0,50*0.07e-6,20*0.28e-6,9*7e-07,9*7.0e-6,10*92.16000000000001e-6,0.0,end
+tempd=const,300.0,end                             $ initial temperature distribution in K
+tcon=equ,1,end                                    $ thermal conductivity of W in W/m K(equation 1)
+rhocp=equ,2,end                                   $ thermal capacity of W in J/m3K
+hsrc=const,0.0,srcpf,const,0.0,end                $ neglect internal heat generation rate/ spacial distr& source peaking factor
+htrbcl=stemp,tabl,1,end                           $ temperature in K on the plasma-side surface, boundary conditions for heat transfer calculations
+htrbcr=stemp,tabl,1,end                           $ temperature in K on the back-side surface
+end of thermal input
+$ --------------------------
+diffusion input
+$ --------------------------
+start diffseg,end
+nbrden= 8.42794668519528e+28,end                   $ PDDH: lattice number density of (pure) iron in atoms/m3 (7.874*1e3/(55.845*1.67e-27))
+concd=d,const,0.0,end                             $ initial mobile D concentration in atoms/m3 (zero is accurate for long time delay between exposure and desorption)
+ssconc=d2,0.0,0.0,end                             $ initial surface species concentration atoms/m3
+trapping=ttyp,1,tconc,const,0.0263673
+              tspc,d,alphr,equ,4,alpht,equ,3
+              ctrap,0.0,10*1.0,78*0.0,0.0
+         ttyp,2,tconc,const,0.00659183
+              tspc,d,alphr,equ,5,alpht,equ,3
+              ctrap,0.0,10*1.0,78*0.0,0.0
+         ttyp,3,tconc,const,0.00263673
+              tspc,d,alphr,equ,6,alpht,equ,3
+              ctrap,0.0,10*1.0,78*0.0,0.0,end
+qstrdr=d,const,0.,end                             $ Q*/R for Soret effect unknown - not relevant since sample has homogeneous temperature (diffusion coefficient for thermal diffusion)
+dcoef=d,equ,7,d2,equ,8,end                        $ diffusion coefficient (m2/s)
+$srcsd=d,tabl,2,srcpf,0.0,0.5,63*0.0,0.0,end       $ volumetric production or annihilation (srcsd), peak factor (srcpf) depth distribution of diffusing species
+srcsd=d,const,0.0,srcpf,const,0.0,end            $ in case of no implantation
+difbcl=surfdep,encl,1
+   spc,d,nu,8.4e12,ec,-0.4,es,1.04
+      comb,d,prob,1.0
+   spc,d2,nu,8.4e12,ec,-0.1
+      exch,d2g,amu,4.0,ex,0.05
+      diss,d,d,eb,0.05
+      form,d,d,prob,1.0,end
+difbcr=surfdep,encl,1
+   spc,d,nu,8.4e12,ec,-0.4,es,1.04
+      comb,d,prob,1.0
+   spc,d2,nu,8.4e12,ec,-0.1
+      exch,d2g,amu,4.0,ex,0.05
+      diss,d,d,eb,0.05
+      form,d,d,prob,1.0,end
+$difbcl=ratedep,encl,1,spc,d,exch,d2g,ksubd,equ,9,d,ksubr,equ,10,end  $ in case of ratedependent surface reactions
+$difbcr=ratedep,encl,1,spc,d,exch,d2g,ksubd,equ,9,d,ksubr,equ,10,end  $ in case of ratedependent surface reactions
+$ in case of ratedependent surface reactions
+$ --> remove $sspcnme $ssconc
+$ --> change $dcoef=d,equ,7
+$ --> add
+$     $ (9) Dissociation coefficient (ksubd)
+$       y=1.09e34*exp(-3.24/8.618e-5/temp),end
+$     $ (10) Recombination coefficient (ksubr); Ogorodnikova theory Ec = 0.2 eV
+$       y=3.2e-15*exp(-1.16/8.618e-5/temp),end
+$     $
+surfa=0.000225,end $ PDDH: Surface Area: 15.0 x 15.0 mm^2
+end of diffusion input
+$ --------------------------
+equation input
+$ --------------------------
+$ (1) Thermal conductivity of tungsten (W/m-K), fitted from ANSIS data
+      y=163.-0.0739*temp+2.89e-5*temp**2-4.3e-9*temp**3,end $<-val-2d ; thoen->: y=-5.686e-8*temp**3+2.0428e-4*temp**2-0.26620*temp+236.22,end
+$ (2) Rho Cp for tungsten (J/m3K), fitted from ANSIS data
+      y=(1930.-.0388*temp)*(131.+.0226*temp-5.73e-6*temp**2+3.69e-9
+*temp**3),end $ <-val-2d; thoen -> y=7.0046e-5*temp**3-1.6608e-1*temp**2-5.0940e2*temp+2.3937e6,end
+$ (3) Alpht for d in tungsten (1/s) PDDH: retrapping
+	  y=2.9e12*exp(-0.245/8.625e-5/temp),end
+$ (4) PDDH: Alphr for trap 1 in iron (1/s)
+     y=8.4e12*exp(-1.35/8.625e-5/temp),end
+$ (5) Alphr for trap 2 in tungsten (1/s)
+     y=8.4e12*exp(-1.3125/8.625e-5/temp),end
+$ (6) Alphr for trap 3 in tungsten (1/s)
+     y=8.4e12*exp(-1.575/8.625e-5/temp),end
+$ (7) PDDH: Diffusivity for d in Fe (m2/s)(, coincidence that it is the same values as the surface diffusivity for W)
+      y=2.0e-7*exp(-0.1/8.625e-5/temp),end
+$ (8) Surface diffusivity for d2 at tungsten surface (m2/s)
+      y=2.0e-7*exp(-0.1/8.625e-5/temp),end
+end of equation input
+$ --------------------------
+table input
+$ --------------------------
+$ (1) Surface temperature sample (K) PDDH: 2 K/s from room temp to 1200
+0.,300.
+450.,1200.,end
+$ (2) Implantation flux (atom/m2/s)
+0.,0.0
+450.,0.0,end
+end of table input
+$ --------------------------
+control input
+$ --------------------------
+time=0.,end                                       $ Initializing time at 0.0
+tstep=.5,end                                      $ Size of each time step
+timend=450.,end                                  $ PDDH: Defining the finishing point
+nprint=1,end                                      $ The number of tstep cycles skipped between output listings of the results (.out)
+itermx=100000,end                                 $ Number of iterations before the program stops;    Poon = 10000, default = 1000
+delcmx=1.e-6,end                                  $ Convergence limit;                                Poon = 1.0e-6, default = 1.0e-7
+bump=1.e-4,end                                    $ Fractional change in dependent variable value used in the process of Newton-Raphson convergence Poon=1.0e-4 default 1.0e-2
+bound=3.0,end                                     $ Maximum iterative variable increase factor;       Poon = 5.0, default = 2.0
+omega=0.9,end                                     $ Damping factor to improve convergence;            Poon = 0.9, default = 1.3
+damp=0.9,end                                      $ Damping factor to improve convergence;            Poon = 0.9, default = 0.7
+end of control input
+$ --------------------------
+plot input
+$ --------------------------
+nplot=1,end                                       $ The number of tstep cycles skipped between output listings of the results (.plt)
+plotseg=1,end                                     $ Which segments are to be included in plot
+plotencl=1,end                                    $ Which enclosures should be plotted
+dname=d,end                                       $ Which diffusion species are to be plotted
+sname=end                                         $ Which surface species are to be plotted
+ename=end                                         $ Which enclosure species are to be plotted
+dplot=moblinv,sflux,trapinv,end                   $ Which parameters of diffusion species are to be plotted
+eplot=end                                         $ Which parameters of enclosure species are to be plotted
+end of plot input
+$ --------------------------
+end of data
