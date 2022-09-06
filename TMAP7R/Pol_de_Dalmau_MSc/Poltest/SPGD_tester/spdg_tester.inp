@@ -2,21 +2,9 @@ $ Details can be found in the TMAP7 manual. Dollar signs in front of text indica
 $ --------------------------
 title input                                       $ Title input can be used to give details about the simulation.
 $ --------------------------
-AS-1: 12 Cr ODS
-[] contain older version info. Simulation of 12 Cr ODS (assume pure Fe)
-[Polycrystalline tungsten] experiment 
-irradiated at RT with [H] at [5 keV],
-1E15 H/cm2/s for [5000]8400 s. 
-TDS at [50 C/min] 2 K/s 
-to [1000 C] 1200 K.
-[See T. Hino et al., Fus. Engr. 
-& Des. 39-40 (1998) pp.227-233.] 
-See V.S.M. PEREIRA, Microstructural Evolution and Behavior of Deuterium in a Ferritic ODS 12 Cr Steel Annealed at Different Temperatures. TDS at 2 K/s to 1200 K. Despite ODS steel, we assume pure alpha-Fe
-[polyX tungsten, no implantation
-no cooldown sample in 2s to 300K
-TDS at 1 K/s to 1300K
-Traps: 1.2eV(1mm)/ 1.4eV(1um)/ 1.85eV(0um)]
-end of title input
+Test file. More or less arbitrary spectrum is generated here. 
+This input file is the one that the code keeps overwriting and running
+until the number of iterations is reached.
 $ --------------------------
 main input
 $ --------------------------
@@ -53,13 +41,13 @@ start diffseg,end
 nbrden= 8.42794668519528e+28,end                   $ PDDH: lattice number density of (pure) iron in atoms/m3 (7.874*1e3/(55.845*1.67e-27))
 concd=d,const,0.0,end                             $ initial mobile D concentration in atoms/m3 (zero is accurate for long time delay between exposure and desorption)
 ssconc=d2,0.0,0.0,end                             $ initial surface species concentration atoms/m3
-trapping=ttyp,1,tconc,const,0.02999829
+trapping=ttyp,1,tconc,const,0.03390082
               tspc,d,alphr,equ,4,alpht,equ,3
               ctrap,0.0,10*1.0,78*0.0,0.0
-         ttyp,2,tconc,const,0.00768775
+         ttyp,2,tconc,const,0.00659183
               tspc,d,alphr,equ,5,alpht,equ,3
               ctrap,0.0,10*1.0,78*0.0,0.0
-         ttyp,3,tconc,const,0.00315385
+         ttyp,3,tconc,const,0.00339008
               tspc,d,alphr,equ,6,alpht,equ,3
               ctrap,0.0,10*1.0,78*0.0,0.0,end
 qstrdr=d,const,0.,end                             $ Q*/R for Soret effect unknown - not relevant since sample has homogeneous temperature (diffusion coefficient for thermal diffusion)
@@ -102,13 +90,13 @@ $ (2) Rho Cp for 0.3% Y2O3 12 Cr ODS (J/m3K), fitted from ANSIS data
       y=(1930.-.0388*temp)*(131.+.0226*temp-5.73e-6*temp**2+3.69e-9
 *temp**3),end $ <-val-2d; thoen -> y=7.0046e-5*temp**3-1.6608e-1*temp**2-5.0940e2*temp+2.3937e6,end
 $ (3) Alpht for d in 0.3% Y2O3 12 Cr ODS (1/s) PDDH: retrapping
-	  y=2.9e12*exp(-0.25001679/8.625e-5/temp),end
+	  y=2.9e12*exp(-0.245/8.625e-5/temp),end
 $ (4) PDDH: Alphr for trap 1 in 0.3% Y2O3 12 Cr ODS (1/s)
-     y=8.4e12*exp(-1.16751864/8.625e-5/temp),end
+     y=8.4e12*exp(-1.35/8.625e-5/temp),end
 $ (5) Alphr for trap 2 in 0.3% Y2O3 12 Cr ODS (1/s)
-     y=8.4e12*exp(-1.45823101/8.625e-5/temp),end
+     y=8.4e12*exp(-1.3125/8.625e-5/temp),end
 $ (6) Alphr for trap 3 in 0.3% Y2O3 12 Cr ODS (1/s)
-     y=8.4e12*exp(-1.76266165/8.625e-5/temp),end
+     y=8.4e12*exp(-1.575/8.625e-5/temp),end
 $ (7) PDDH: Diffusivity for d in Fe (m2/s)(, coincidence that it is the same values as the surface diffusivity for W)
       y=2.0e-7*exp(-0.1/8.625e-5/temp),end
 $ (8) Surface diffusivity for d2 at 0.3% Y2O3 12 Cr ODS surface (m2/s)

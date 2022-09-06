@@ -2,20 +2,8 @@ $ Details can be found in the TMAP7 manual. Dollar signs in front of text indica
 $ --------------------------
 title input                                       $ Title input can be used to give details about the simulation.
 $ --------------------------
-AS-1: 12 Cr ODS
-[] contain older version info. Simulation of 12 Cr ODS (assume pure Fe)
-[Polycrystalline tungsten] experiment 
-irradiated at RT with [H] at [5 keV],
-1E15 H/cm2/s for [5000]8400 s. 
-TDS at [50 C/min] 2 K/s 
-to [1000 C] 1200 K.
-[See T. Hino et al., Fus. Engr. 
-& Des. 39-40 (1998) pp.227-233.] 
-See V.S.M. PEREIRA, Microstructural Evolution and Behavior of Deuterium in a Ferritic ODS 12 Cr Steel Annealed at Different Temperatures. TDS at 2 K/s to 1200 K. Despite ODS steel, we assume pure alpha-Fe
-[polyX tungsten, no implantation
-no cooldown sample in 2s to 300K
-TDS at 1 K/s to 1300K
-Traps: 1.2eV(1mm)/ 1.4eV(1um)/ 1.85eV(0um)]
+Arbitrary spectrum generated for the program to have something to 
+fit data to. Input file very much inspired from M.H.J. 't Hoen's example file.
 end of title input
 $ --------------------------
 main input
