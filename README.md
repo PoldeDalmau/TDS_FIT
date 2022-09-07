@@ -17,7 +17,7 @@ This work is still pending
 ## How to use this code
 
 You need to have TMAP7 installed in order to use this code. The main.py script must be in the TMAP7R directory (the same directory as the *tmap7.bat* and *t7.bat* files). 
-Before executing the main.py file:
+Before executing the *main.py* file:
 
  - run the usual "tmap7" command in your terminal. 
  - run some .inp file as t7 "C:PATH\to\input\filename"
