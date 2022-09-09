@@ -111,16 +111,6 @@ class tmap_writer(object):
             "	  y=2.9e12*exp(-" + str(round(e_ret,8)) + "/8.625e-5/temp),end\n"
         return string
 
-    def retrap_nrgy_i_set(self, e_ret, int_trap):
-        """
-        String for tmap describing retrapping.
-        In TMAP: alpht
-        """
-        equ_num = ["3", "9" , "10"]
-        string = "$ (" + equ_num[int_trap - 1] + ") Alpht for d in 0.3% Y2O3 12 Cr ODS trap " + str(int_trap) + " (1/s) PDDH: retrapping\n"\
-            "	  y=2.9e12*exp(-" + str(round(e_ret,8)) + "/8.625e-5/temp),end\n"
-        return string
-
     def inp_write(self, filename, N1, N2, N3, e_1, e_2, e_3, e_ret, imp_depth):
         """
         Opens given file in argument (without extension!),
